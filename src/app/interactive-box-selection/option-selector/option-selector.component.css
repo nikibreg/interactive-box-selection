@@ -1,0 +1,46 @@
+
+
+:host {
+    margin-bottom: 20px;
+    padding: 15px;
+    border: 1px solid #dee2e6;
+    border-radius: 4px;
+    display: flex;
+    background-color: #f8f9fa;
+  }
+
+  .options-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 50px;
+    width: 100%;
+  }
+  
+  .option-selector.hidden {
+    display: none;
+  }
+  
+  .option-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  
+  .option {
+    padding: 8px 16px;
+    border: 1px solid #dee2e6;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+  
+  .option:hover {
+    background-color: #e9ecef;
+  }
+  
+  .option.selected {
+    background-color: #007bff;
+    color: white;
+    border-color: #0056b3;
+  }

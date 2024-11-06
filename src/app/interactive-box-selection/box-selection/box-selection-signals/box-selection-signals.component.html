@@ -1,0 +1,20 @@
+
+<div class="box-container">
+    <app-box 
+      *ngFor="let box of boxes; let i = index" 
+      [isSelected]="selectedBoxIndex === i"
+      [selectedOption]="box.selectedOption"
+      (onSelect)="selectBox(i)">
+    </app-box>
+    <button class="clear" (click)="resetSelections()">
+      Clear All Selections
+    </button>
+  </div>
+  
+    <app-option-selector
+      *ngIf="selectedBoxIndex !== null"
+      [selectedOption]="boxes[selectedBoxIndex].selectedOption"
+      (optionSelected)="selectOption($event)">
+    </app-option-selector>
+  
+  
