@@ -1,5 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, Signal } from '@angular/core';
 import { BoxesStore } from '../../boxes.store';
+import { Box } from '../../models/box';
 
 @Component({
   selector: 'app-box-selection-signals',
@@ -8,22 +9,27 @@ import { BoxesStore } from '../../boxes.store';
 })
 export class BoxSelectionSignalsComponent {
   constructor(
-    private boxStore: BoxesStore
+    public boxStore: BoxesStore
   ) {}
-  shouldUseSignals: boolean | null = null;
-  
-  boxes: any = [];
-  selectBox: (index: number) => void = () => {};
-  selectOption: (option: string) => void = () => {};
-  selectedBoxIndex: any = null;
-  resetSelections: () => void = () => {};
+  boxes: Signal<Box[]>;
+  selectedBoxIndex: Signal<number | null>;
 
-  
   ngOnInit(): void {
+    this.boxStore.loadSelections();
     this.boxes = this.boxStore.getBoxes();
-    this.selectBox = this.boxStore.selectBox;
-    this.selectOption = this.boxStore.selectOption;
     this.selectedBoxIndex = this.boxStore.getSelectedBoxIndex();
-    this.resetSelections = this.boxStore.resetSelections;
+  }
+
+  selectBox(index: number): void {
+    this.boxStore.selectBox(index);
+  }
+
+  selectOption(option: string): void {
+    this.boxStore.selectOption(option);
+    this.selectedBoxIndex = this.boxStore.getSelectedBoxIndex();
+  }
+
+  resetSelections(): void {
+    this.boxStore.resetSelections();
   }
 }

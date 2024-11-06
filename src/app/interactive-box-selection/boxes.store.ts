@@ -30,6 +30,13 @@ export class BoxesStore {
     const updatedBoxes = [...this.boxes()];
     updatedBoxes[currentIndex] = { selectedOption: option };
     this.boxes.set(updatedBoxes);
+    
+    if (this.selectedBoxIndex()! < this.boxes().length - 1) {
+      const nextIndex = this.boxes().findIndex((box, idx) =>
+        idx > this.selectedBoxIndex()! && !box.selectedOption
+      );
+      this.selectedBoxIndex.set(nextIndex);
+    }
     this.saveToLocalStorage();
   }
 
