@@ -1,5 +1,5 @@
-import { Component, Signal } from '@angular/core';
-import { BoxesStore } from '../../boxes.store';
+import { Component, inject, Signal } from '@angular/core';
+import { boxesStoreInstance, BoxesStore } from '../../boxes.store';
 import { Box } from '../../models/box';
 import { OptionSelectorComponent } from '../../option-selector/option-selector.component';
 import { BoxComponent } from '../../box/box.component';
@@ -14,31 +14,25 @@ import { CommonModule } from '@angular/common';
     CommonModule,
     BoxComponent,
     OptionSelectorComponent
+  ],
+  providers: [
+    { provide: BoxesStore, useValue: boxesStoreInstance }
   ]
 })
 export class BoxSelectionSignalsComponent {
+  store = inject(BoxesStore);
   constructor(
-    public boxStore: BoxesStore
   ) {}
-  boxes: Signal<Box[]>;
-  selectedBoxIndex: Signal<number | null>;
 
   ngOnInit(): void {
-    this.boxStore.loadSelections();
-    this.boxes = this.boxStore.getBoxes();
-    this.selectedBoxIndex = this.boxStore.getSelectedBoxIndex();
-  }
-
-  selectBox(index: number): void {
-    this.boxStore.selectBox(index);
-  }
-
-  selectOption(option: string): void {
-    this.boxStore.selectOption(option);
-    this.selectedBoxIndex = this.boxStore.getSelectedBoxIndex();
+    this.store.loadSelections();
   }
 
   resetSelections(): void {
-    this.boxStore.resetSelections();
+    this.store.resetSelections();
+  }
+
+  selectBox(boxIndex: number) {
+    this.store.selectBox(boxIndex)
   }
 }

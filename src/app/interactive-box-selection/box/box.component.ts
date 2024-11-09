@@ -1,4 +1,5 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, inject, Input, Output } from '@angular/core';
+import { BoxesStore } from '../boxes.store';
 
 @Component({
   selector: 'app-box',
@@ -11,8 +12,4 @@ export class BoxComponent {
   @Input() isSelected = false;
   @Input() selectedOption: any;
   @Output() onSelect = new EventEmitter<any>();
-
-  selectBox() {
-    this.onSelect.emit()
-  }
 }

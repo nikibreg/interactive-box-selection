@@ -7,7 +7,7 @@ export class FeatureFlagsService {
   private readonly STORAGE_KEY = 'useSignals';
 
   // modify this to use the feature with signals
-  private _useSignals: boolean = false;
+  private _useSignals: boolean = true;
 
   get useSignals(): boolean {
     return this._useSignals;

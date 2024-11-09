@@ -1,60 +1,74 @@
-import { Injectable, signal } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { Box } from './models/box';
+import { signalStore, withState, withMethods, patchState } from '@ngrx/signals';
 
-@Injectable({
-  providedIn: 'root'
-})
-export class BoxesStore {
-  private readonly STORAGE_KEY = 'boxes';
-  private readonly DEFAULT_BOXES = Array(10).fill({ selectedOption: null });
-
-  private boxes = signal<Box[]>(this.DEFAULT_BOXES);
-  private selectedBoxIndex = signal<number | null>(null);
-
-  getBoxes() {
-    return this.boxes.asReadonly();
-  }
-
-  getSelectedBoxIndex() {
-    return this.selectedBoxIndex.asReadonly(); 
-  }
-
-  selectBox(index: number) {
-    this.selectedBoxIndex.set(index);
-  }
-
-  selectOption(option: string) {
-    const currentIndex = this.selectedBoxIndex();
-    if (currentIndex === null) return;
-
-    const updatedBoxes = [...this.boxes()];
-    updatedBoxes[currentIndex] = { selectedOption: option };
-    this.boxes.set(updatedBoxes);
-    
-    if (this.selectedBoxIndex()! < this.boxes().length - 1) {
-      const nextIndex = this.boxes().findIndex((box, idx) =>
-        idx > this.selectedBoxIndex()! && !box.selectedOption
-      );
-      this.selectedBoxIndex.set(nextIndex);
-    }
-    this.saveToLocalStorage();
-  }
-
-  resetSelections() {
-    this.boxes.set(this.DEFAULT_BOXES);
-    this.selectedBoxIndex.set(null);
-    this.saveToLocalStorage();
-  }
-
-  loadSelections() {
-    const savedBoxes = localStorage.getItem(this.STORAGE_KEY);
-    if (savedBoxes) {
-      this.boxes.set(JSON.parse(savedBoxes));
-    }
-  }
-
-  private saveToLocalStorage() {
-    localStorage.setItem(this.STORAGE_KEY, JSON.stringify(this.boxes()));
-  }
+interface BoxesState {
+  boxes: Box[];
+  selectedBoxIndex: number | null;
+  selectedOption: string | null;
 }
 
+const STORAGE_KEY = 'boxes';
+const DEFAULT_BOXES = Array(10).fill({ selectedOption: null });
+const OPTIONS = ['Option A', 'Option B', 'Option C', 'Option D'];
+
+const initialState: BoxesState = {
+  boxes: DEFAULT_BOXES,
+  selectedBoxIndex: null,
+  selectedOption: null
+};
+
+export const BoxesStore = signalStore(
+  withState(initialState),
+  withMethods((store) => ({
+    getOptions() {
+      return OPTIONS;
+    },
+    selectBox(index: number) {
+      patchState(store, state => ({ ...state, selectedBoxIndex: index }));
+      console.log(store.selectedBoxIndex())
+    },
+
+    selectOption(option: string) {
+      console.log(store.selectedBoxIndex(), store.boxes())
+      
+      const currentIndex = store.selectedBoxIndex();
+      if (currentIndex === null) return;
+
+      const updatedBoxes = [...store.boxes()];
+      updatedBoxes[currentIndex] = { selectedOption: option };
+
+      let nextIndex = currentIndex;
+      if (currentIndex < updatedBoxes.length - 1) {
+        nextIndex = updatedBoxes.findIndex((box, idx) =>
+          idx > currentIndex && !box.selectedOption
+        );
+      }
+
+      patchState(store, state => ({
+        boxes: updatedBoxes,
+        selectedBoxIndex: nextIndex
+      }));
+      
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(updatedBoxes));
+    },
+
+    resetSelections() {
+      patchState(store, state => ({
+        boxes: DEFAULT_BOXES,
+        selectedBoxIndex: null
+      }));
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(DEFAULT_BOXES));
+    },
+
+    loadSelections() {
+      const savedBoxes = localStorage.getItem(STORAGE_KEY);
+      if (savedBoxes) {
+        patchState(store, state => ({ boxes: JSON.parse(savedBoxes) }));
+      }
+    }
+  }))
+);
+
+// Singleton instance of BoxesStore
+export const boxesStoreInstance = new BoxesStore();

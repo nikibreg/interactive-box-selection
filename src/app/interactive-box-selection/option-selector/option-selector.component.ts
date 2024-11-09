@@ -1,18 +1,33 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, inject, Input, Output } from '@angular/core';
+import { boxesStoreInstance, BoxesStore } from '../boxes.store';
 
 @Component({
   selector: 'app-option-selector',
   templateUrl: './option-selector.component.html',
   styleUrl: './option-selector.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  
+  providers: [{ provide: BoxesStore, useValue: boxesStoreInstance }],
   standalone: true,
 })
 export class OptionSelectorComponent {
-  @Input() selectedOption: string | null = null;
-  @Input() options: string[] = ['Option A', 'Option B', 'Option C', 'Option D'];
-  @Output() optionSelected = new EventEmitter<string>();
-
-  selectOption(option: string): void {
-    this.optionSelected.emit(option);
+  readonly store = inject(BoxesStore);
+  constructor() {
+    // this.selectedOption
   }
+
+  
+  selectOption(option: string): void {
+    this.store.selectOption(option);
+  }
+
+  // selectedOption$ = this.boxStore.getSelectedOption();
+
+  // selectOption(option: string): void {
+  //   this.optionSelected.emit(option);
+  // }
+
+  // selectOption(option: string): void {
+  //   this.optionSelected.emit(option);
+  // }
 }

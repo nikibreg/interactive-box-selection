@@ -1,6 +1,6 @@
 <div class="options-container">
-    @for (option of options; track option) {
-        <button class="option" [class.selected]="option === selectedOption"
+    @for (option of store.getOptions(); track option) {
+        <button class="option" [class.selected]="option === store.selectedOption()"
             (click)="selectOption(option)">
             {{ option }}
         </button>

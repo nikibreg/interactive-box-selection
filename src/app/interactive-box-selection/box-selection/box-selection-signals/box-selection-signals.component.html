@@ -1,11 +1,11 @@
 
 
 <div class="box-container">
-    @for (box of boxes(); track $index) {
+    @for (box of store.boxes(); track $index) {
       <app-box 
-        [isSelected]="selectedBoxIndex() === $index"
+        [isSelected]="store.selectedBoxIndex() === $index"
         [selectedOption]="box.selectedOption"
-        (onSelect)="selectBox($index)">
+        (click)="selectBox($index)">
       </app-box>
     }
     <button class="clear" (click)="resetSelections()">
@@ -13,9 +13,7 @@
     </button>
 </div>
 
-@if (selectedBoxIndex() !== null) {
-  <app-option-selector
-    [selectedOption]="boxes()[selectedBoxIndex()!].selectedOption"
-    (optionSelected)="selectOption($event)">
+@if (store.selectedBoxIndex() !== null) {
+  <app-option-selector>
   </app-option-selector>
 } 
