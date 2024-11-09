@@ -12,22 +12,8 @@ import { boxesStoreInstance, BoxesStore } from '../boxes.store';
 })
 export class OptionSelectorComponent {
   readonly store = inject(BoxesStore);
-  constructor() {
-    // this.selectedOption
-  }
-
   
   selectOption(option: string): void {
     this.store.selectOption(option);
   }
-
-  // selectedOption$ = this.boxStore.getSelectedOption();
-
-  // selectOption(option: string): void {
-  //   this.optionSelected.emit(option);
-  // }
-
-  // selectOption(option: string): void {
-  //   this.optionSelected.emit(option);
-  // }
 }
