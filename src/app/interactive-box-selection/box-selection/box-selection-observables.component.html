@@ -2,7 +2,7 @@
   @for (box of boxSelectionService.boxes$ | async; track $index) {
     <div class="box" 
       (click)="selectBox($index)"
-      [class.selected]="$index == boxSelectionService.selectedBoxIndex"
+      [class.selected]="$index == (boxSelectionService.selectedBoxIndex$ | async)"
       [class.has-option]="box.selectedOption">
         {{ (box.selectedOption) || 'Select' }}
     </div>
@@ -12,7 +12,7 @@
   </button>
 </div>
 
-@if (boxSelectionService.selectedBoxIndex !== null) {
+@if ((boxSelectionService.selectedBoxIndex$ | async) !== null) {
   <app-option-selector>
   </app-option-selector>
 }

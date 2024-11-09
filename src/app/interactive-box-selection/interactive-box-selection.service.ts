@@ -7,46 +7,53 @@ import { Box } from './models/box';
 })
 export class InteractiveBoxSelectionService {
   private readonly STORAGE_KEY = 'boxSelections';
-  boxesSubject = new BehaviorSubject<Box[]>(
+  private boxesSubject = new BehaviorSubject<Box[]>(
     Array(10).fill(null).map(() => ({ selectedOption: null }))
   );
   boxes$ = this.boxesSubject.asObservable();
-  selectedBoxIndex: number | null = null;
+  private selectedBoxIndexSubject = new BehaviorSubject<number | null>(null);
+  selectedBoxIndex$ = this.selectedBoxIndexSubject.asObservable();
   options: string[] = ['Option A', 'Option B', 'Option C', 'Option D'];
 
   get selectedOption$() {
-    return this.selectedBoxIndex !== null 
-      ? this.boxes$.pipe(
-          map(boxes => boxes[this.selectedBoxIndex!].selectedOption)
-        )
-      : null;
+    return this.selectedBoxIndex$.pipe(
+      map(selectedIndex => 
+        selectedIndex !== null 
+          ? this.boxes$.pipe(
+              map(boxes => boxes[selectedIndex].selectedOption)
+            )
+          : null
+      )
+    );
   }
 
   selectBox(index: number): void {
-    this.selectedBoxIndex = index;
+    this.selectedBoxIndexSubject.next(index)
   }
 
   selectOption(option: string): void {
-    if (this.selectedBoxIndex !== null) {
-      this.boxesSubject.pipe(take(1)).subscribe(boxes => {
-        console.log(boxes);
-        const updatedBoxes = [...boxes];
-        updatedBoxes[this.selectedBoxIndex!].selectedOption = option;
-        this.boxesSubject.next(updatedBoxes);
+    this.selectedBoxIndex$.pipe(take(1)).subscribe(selectedBoxIndex => {
+      if (selectedBoxIndex !== null) {
+        this.boxesSubject.pipe(take(1)).subscribe(boxes => {
+          console.log(boxes);
+          const updatedBoxes = [...boxes];
+          updatedBoxes[selectedBoxIndex].selectedOption = option;
+          this.boxesSubject.next(updatedBoxes);
 
-        this.saveSelections();
+          this.saveSelections();
 
-        const nextIndex = updatedBoxes.findIndex((box, idx) =>
-          idx > this.selectedBoxIndex! && !box.selectedOption
-        );
-        this.selectedBoxIndex = nextIndex !== -1 ? nextIndex : this.selectedBoxIndex;
-      });
-    }
+          const nextIndex = updatedBoxes.findIndex((box, idx) =>
+            idx > selectedBoxIndex && !box.selectedOption
+          );
+          this.selectedBoxIndexSubject.next(nextIndex !== -1 ? nextIndex : selectedBoxIndex);
+        });
+      }
+    });
   }
 
   resetSelections(): void {
     this.boxesSubject.next(Array(10).fill(null).map(() => ({ selectedOption: null })));
-    this.selectedBoxIndex = null;
+    this.selectedBoxIndexSubject.next(null)
     localStorage.removeItem(this.STORAGE_KEY);
   }
 

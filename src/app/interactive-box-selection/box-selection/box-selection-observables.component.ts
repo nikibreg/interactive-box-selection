@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { FeatureFlagsService } from '../../feature-flags.service';
 import { InteractiveBoxSelectionService } from '../interactive-box-selection.service';
 import { map, Observable } from 'rxjs';
 import { Box } from '../models/box';

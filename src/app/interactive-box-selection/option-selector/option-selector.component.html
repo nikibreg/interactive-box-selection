@@ -1,6 +1,6 @@
 <div class="options-container">
     @for (option of boxSelectionService.options; track option) {
-        <button class="option" [class.selected]="option === (boxSelectionService.selectedOption$ | async)"
+        <button class="option"
             (click)="selectOption(option)">
             {{ option }}
         </button>

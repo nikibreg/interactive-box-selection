@@ -13,6 +13,7 @@ import { CommonModule } from '@angular/common';
   ]
 })
 export class OptionSelectorComponent {
+
   constructor(public boxSelectionService: InteractiveBoxSelectionService) {
   }
 
