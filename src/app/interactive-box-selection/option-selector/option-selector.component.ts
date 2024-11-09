@@ -4,7 +4,8 @@ import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from 
   selector: 'app-option-selector',
   templateUrl: './option-selector.component.html',
   styleUrl: './option-selector.component.css',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
 })
 export class OptionSelectorComponent {
   @Input() selectedOption: string | null = null;

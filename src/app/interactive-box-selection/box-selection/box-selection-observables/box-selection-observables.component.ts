@@ -3,15 +3,19 @@ import { FeatureFlagsService } from '../../../feature-flags.service';
 import { InteractiveBoxSelectionService } from '../../interactive-box-selection.service';
 import { map, Observable } from 'rxjs';
 import { Box } from '../../models/box';
+import { BoxComponent } from '../../box/box.component';
+import { OptionSelectorComponent } from '../../option-selector/option-selector.component';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-box-selection-observables',
   templateUrl: './box-selection-observables.component.html',
-  styleUrl: '../box-selection.component.css'
+  styleUrl: '../box-selection.component.css',
+  standalone: true,
+  imports: [CommonModule, BoxComponent, OptionSelectorComponent]
 })
 export class BoxSelectionObservablesComponent {
   constructor(
-    private featureFlags: FeatureFlagsService,
     public boxSelectionService: InteractiveBoxSelectionService,
   ) {}
   boxes$: Observable<Box[]>;

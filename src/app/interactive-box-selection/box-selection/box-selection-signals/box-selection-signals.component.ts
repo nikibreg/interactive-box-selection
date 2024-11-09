@@ -1,11 +1,20 @@
 import { Component, Signal } from '@angular/core';
 import { BoxesStore } from '../../boxes.store';
 import { Box } from '../../models/box';
+import { OptionSelectorComponent } from '../../option-selector/option-selector.component';
+import { BoxComponent } from '../../box/box.component';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-box-selection-signals',
   templateUrl: './box-selection-signals.component.html',
-  styleUrl: '../box-selection.component.css'
+  styleUrl: '../box-selection.component.css',
+  standalone: true,
+  imports: [
+    CommonModule,
+    BoxComponent,
+    OptionSelectorComponent
+  ]
 })
 export class BoxSelectionSignalsComponent {
   constructor(
