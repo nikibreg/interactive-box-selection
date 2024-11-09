@@ -7,7 +7,7 @@ import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-box-selection-observables',
-  templateUrl: './box-selection-observables.component.html',
+  templateUrl: './box-selection.component.html',
   styleUrl: './box-selection.component.css',
   standalone: true,
   imports: [CommonModule, OptionSelectorComponent]
