@@ -4,8 +4,8 @@ import { OptionSelectorComponent } from '../option-selector/option-selector.comp
 import { CommonModule } from '@angular/common';
 
 @Component({
-  selector: 'app-box-selection-signals',
-  templateUrl: './box-selection-signals.component.html',
+  selector: 'app-box-selection',
+  templateUrl: './box-selection.component.html',
   styleUrl: './box-selection.component.css',
   standalone: true,
   imports: [
@@ -18,8 +18,6 @@ import { CommonModule } from '@angular/common';
 })
 export class BoxSelectionSignalsComponent {
   store = inject(BoxesStore);
-  constructor(
-  ) {}
 
   ngOnInit(): void {
     this.store.loadSelections();

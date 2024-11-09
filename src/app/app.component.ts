@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import { BoxSelectionSignalsComponent } from './interactive-box-selection/box-selection/box-selection-signals.component';
+import { BoxSelectionSignalsComponent } from './interactive-box-selection/box-selection/box-selection.component';
 
 @Component({
   selector: 'app-root',

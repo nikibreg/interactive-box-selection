@@ -1,7 +1,7 @@
 <div class="options-container">
     @for (option of store.getOptions(); track option) {
         <button class="option" [class.selected]="option === store.selectedOption()"
-            (click)="selectOption(option)">
+            (click)="store.selectOption(option)">
             {{ option }}
         </button>
     }
