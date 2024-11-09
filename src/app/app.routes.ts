@@ -1,7 +1,6 @@
 import { Routes } from '@angular/router';
-import { BoxSelectionComponent } from './interactive-box-selection/box-selection/box-selection-container.component';
-import { featureFlagGuard } from './feature-flag.guard';
+import { BoxSelectionSignalsComponent } from './interactive-box-selection/box-selection/box-selection-signals.component';
 
 export const routes: Routes = [
-    { path: '', component: BoxSelectionComponent, canActivate: [featureFlagGuard] }
+    { path: '', component: BoxSelectionSignalsComponent }
 ];
