@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { FeatureFlagsService } from '../../feature-flags.service';
 import { InteractiveBoxSelectionService } from '../interactive-box-selection.service';
 import { BoxesStore } from '../boxes.store';
-import { BoxSelectionObservablesComponent } from './box-selection-observables/box-selection-observables.component';
+import { BoxSelectionObservablesComponent } from './box-selection-observables.component';
 import { BoxSelectionSignalsComponent } from './box-selection-signals/box-selection-signals.component';
 
 @Component({

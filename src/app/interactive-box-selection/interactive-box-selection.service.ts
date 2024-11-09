@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, map, take } from 'rxjs';
 import { Box } from './models/box';
 
 @Injectable({
@@ -14,24 +14,33 @@ export class InteractiveBoxSelectionService {
   selectedBoxIndex: number | null = null;
   options: string[] = ['Option A', 'Option B', 'Option C', 'Option D'];
 
+  get selectedOption$() {
+    return this.selectedBoxIndex !== null 
+      ? this.boxes$.pipe(
+          map(boxes => boxes[this.selectedBoxIndex!].selectedOption)
+        )
+      : null;
+  }
+
   selectBox(index: number): void {
     this.selectedBoxIndex = index;
   }
 
-
   selectOption(option: string): void {
     if (this.selectedBoxIndex !== null) {
-      console.log(this.boxesSubject.getValue())
-      const boxes = this.boxesSubject.getValue();
-      boxes[this.selectedBoxIndex].selectedOption = option;
-      this.boxesSubject.next(boxes);
+      this.boxesSubject.pipe(take(1)).subscribe(boxes => {
+        console.log(boxes);
+        const updatedBoxes = [...boxes];
+        updatedBoxes[this.selectedBoxIndex!].selectedOption = option;
+        this.boxesSubject.next(updatedBoxes);
 
-      this.saveSelections();
+        this.saveSelections();
 
-      const nextIndex = this.boxesSubject.value.findIndex((box, idx) =>
-        idx > this.selectedBoxIndex! && !box.selectedOption
-      );
-      this.selectedBoxIndex = nextIndex !== -1 ? nextIndex : this.selectedBoxIndex;
+        const nextIndex = updatedBoxes.findIndex((box, idx) =>
+          idx > this.selectedBoxIndex! && !box.selectedOption
+        );
+        this.selectedBoxIndex = nextIndex !== -1 ? nextIndex : this.selectedBoxIndex;
+      });
     }
   }
 
@@ -50,7 +59,9 @@ export class InteractiveBoxSelectionService {
   }
 
   private saveSelections(): void {
-    const selections = this.boxesSubject.value.map(box => box.selectedOption);
-    localStorage.setItem(this.STORAGE_KEY, JSON.stringify(selections));
+    this.boxesSubject.pipe(take(1)).subscribe(boxes => {
+      const selections = boxes.map(box => box.selectedOption);
+      localStorage.setItem(this.STORAGE_KEY, JSON.stringify(selections));
+    });
   }
 }

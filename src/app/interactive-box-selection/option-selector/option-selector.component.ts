@@ -1,4 +1,6 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
+import { InteractiveBoxSelectionService } from '../interactive-box-selection.service';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-option-selector',
@@ -6,13 +8,15 @@ import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from 
   styleUrl: './option-selector.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
+  imports: [
+    CommonModule
+  ]
 })
 export class OptionSelectorComponent {
-  @Input() selectedOption: string | null = null;
-  @Input() options: string[] = ['Option A', 'Option B', 'Option C', 'Option D'];
-  @Output() optionSelected = new EventEmitter<string>();
+  constructor(public boxSelectionService: InteractiveBoxSelectionService) {
+  }
 
-  selectOption(option: string): void {
-    this.optionSelected.emit(option);
+  selectOption(option: string) {
+    this.boxSelectionService.selectOption(option);
   }
 }

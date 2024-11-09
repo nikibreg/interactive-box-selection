@@ -1,0 +1,18 @@
+<div class="box-container">
+  @for (box of boxSelectionService.boxes$ | async; track $index) {
+    <div class="box" 
+      (click)="selectBox($index)"
+      [class.selected]="$index == boxSelectionService.selectedBoxIndex"
+      [class.has-option]="box.selectedOption">
+        {{ (box.selectedOption) || 'Select' }}
+    </div>
+  }
+  <button class="clear" (click)="resetSelections()">
+    Clear All Selections
+  </button>
+</div>
+
+@if (boxSelectionService.selectedBoxIndex !== null) {
+  <app-option-selector>
+  </app-option-selector>
+}
