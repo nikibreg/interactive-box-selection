@@ -1,8 +1,6 @@
 import { Component, inject, Signal } from '@angular/core';
 import { boxesStoreInstance, BoxesStore } from '../boxes.store';
-import { Box } from '../models/box';
 import { OptionSelectorComponent } from '../option-selector/option-selector.component';
-import { BoxComponent } from '../box/box.component';
 import { CommonModule } from '@angular/common';
 
 @Component({
@@ -12,7 +10,6 @@ import { CommonModule } from '@angular/common';
   standalone: true,
   imports: [
     CommonModule,
-    BoxComponent,
     OptionSelectorComponent
   ],
   providers: [

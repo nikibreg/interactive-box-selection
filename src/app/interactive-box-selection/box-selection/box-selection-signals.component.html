@@ -1,13 +1,14 @@
 
 
 <div class="box-container">
-    @for (box of store.boxes(); track $index) {
-      <app-box 
-        [isSelected]="store.selectedBoxIndex() === $index"
-        [selectedOption]="box.selectedOption"
-        (click)="selectBox($index)">
-      </app-box>
-    }
+      @for (box of store.boxes(); track $index) {
+        <div class="box" 
+          (click)="selectBox($index)"
+          [class.selected]="$index == store.selectedBoxIndex()"
+          [class.has-option]="box.selectedOption">
+            {{ (box.selectedOption) || 'Select' }}
+        </div>
+      }
     <button class="clear" (click)="resetSelections()">
       Clear All Selections
     </button>
