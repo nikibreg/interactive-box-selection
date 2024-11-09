@@ -1,12 +1,17 @@
 <div class="box-container">
-  <app-box *ngFor="let box of boxSelectionService.boxes$ | async; let i = index" [isSelected]="selectedBoxIndex === i"
-    [selectedOption]="box.selectedOption" (onSelect)="selectBox(i)">
-  </app-box>
+  @for (box of boxSelectionService.boxes$ | async; track $index) {
+    <app-box [isSelected]="selectedBoxIndex === $index" 
+      [selectedOption]="box.selectedOption"
+      (onSelect)="selectBox($index)">
+    </app-box>
+  }
   <button class="clear" (click)="resetSelections()">
     Clear All Selections
   </button>
 </div>
 
-<app-option-selector *ngIf="selectedBoxIndex !== null" [selectedOption]="selectedOption$ | async"
-  (optionSelected)="selectOption($event)">
-</app-option-selector>
+@if (selectedBoxIndex !== null) {
+  <app-option-selector [selectedOption]="selectedOption$ | async"
+    (optionSelected)="selectOption($event)">
+  </app-option-selector>
+}

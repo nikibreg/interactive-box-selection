@@ -1,6 +1,8 @@
 <div class="options-container">
-    <button *ngFor="let option of options" class="option" [class.selected]="option === selectedOption"
-        (click)="selectOption(option)">
-        {{ option }}
-    </button>
+    @for (option of options; track option) {
+        <button class="option" [class.selected]="option === selectedOption"
+            (click)="selectOption(option)">
+            {{ option }}
+        </button>
+    }
 </div>
